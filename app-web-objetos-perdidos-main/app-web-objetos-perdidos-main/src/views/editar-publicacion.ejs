@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar publicación</title>
+
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+    
+    <script src="/js/constantes.js" defer></script>
+    <script src="/js/crear-editar.js" defer></script>
+</head>
+
+<body>
+    <%- include('partials/header.ejs', {logued: typeof userLogged !== 'undefined'}) %>
+    <main>
+        <div class="container bg-light bg-opacity-875 py-4 px-3 px-md-5">
+            <h3 class="text-center">Editar publicación</h3>
+            <form action="/editar/1" method="post" id="formPublicacion" encType="multipart/form-data">
+                <%- include('forms/form-publicaciones.ejs') %>
+            </form>
+        </div>
+    </main>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<%- process.env.API_KEY_GOOGLE_MAPS %>&callback=initMap" defer></script>
+</body>
+
+</html>

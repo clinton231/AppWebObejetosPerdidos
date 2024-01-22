@@ -1,0 +1,69 @@
+body {
+  background: url(../img/fondo-singnos.png) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.bg-opacity-875 {
+  --bs-bg-opacity: 0.88;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+/* CREAR PUBLICACION */
+#mapa-ubicacion {
+  height: 500px;
+  width: 100%;
+}
+
+/* DETALLE PUBLICACION */
+#mapa-ubicacion-detalle {
+  height: 500px;
+  width: 100%;
+}
+
+.pin-ubicacion {
+  font-size: 20px;
+}
+
+.subtitulo-detalle{
+  font-size: 14px;
+}
+
+.icono-recompensa{
+  font-size: 1.65rem;
+  margin: 7px;
+}
+
+.img-detalle{
+  max-height: 500px;
+  object-fit: contain;
+}
+
+@media only screen and (max-width: 424px) {
+  .w-100-xs {
+    width: 100%;
+  }
+}
+
+/* INICIO */
+#mapa-home {
+  height: 500px;
+  width: 100%;
+}
+
+.texto-tarjetas-truncate {
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.img-card-home {
+  height: 200px;
+  object-fit: contain;
+}

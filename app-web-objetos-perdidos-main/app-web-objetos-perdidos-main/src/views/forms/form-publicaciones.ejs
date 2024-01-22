@@ -1,0 +1,261 @@
+
+<% if(errors) { %>
+    <% errors.forEach(function(error) { %>
+        <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+        <%= error.msg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% }) %>
+<% } %>
+
+<div class="row g-3">
+  <div class="col-12">
+    <label for="titulo" class="form-label">Título</label>
+    <input type="text" class="form-control" id="titulo" name="titulo" value="<%= formData?.titulo || '' %>">
+    <div class="invalid-feedback">&nbsp;</div>
+  </div>
+  <div class="col-12 col-sm-6">
+    <p>Tipo de publicación</p>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="tipoPublicacion" id="tipoPublicacionPerdido" value="1" <%= formData?.tipoPublicacion ? (formData?.tipoPublicacion == '1' && 'checked') : 'checked' %>>
+      <label class="form-check-label" for="tipoPublicacionPerdido">Perdido</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" name="tipoPublicacion" id="tipoPublicacionEncontrado" value="2" <%= formData?.tipoPublicacion == '2' && 'checked' %>>
+      <label class="form-check-label" for="tipoPublicacionEncontrado">Encontrado</label>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 align-self-end" id="seccionOfreceRecompensa">
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox" role="switch" id="ofreceRecompensa" name="ofreceRecompensa" <%= formData?.ofreceRecompensa == 'on' && 'checked' %>>
+      <label class="form-check-label" for="ofreceRecompensa">¿Ofrece Recompensa?</label>
+    </div>
+  </div>
+  <div class="col-12">
+    <label for="descripcion" class="form-label">Descripción</label>
+    <textarea class="form-control" id="descripcion" name="descripcion" rows="7"><%= formData?.descripcion || '' %></textarea>
+    <div class="invalid-feedback">&nbsp;</div>
+  </div>
+  <div class="col-12 col-sm-6">
+    <label for="fecha" class="form-label">Perdido/Encontrado el día</label>
+    <input type="date" class="form-control" id="fecha" name="fecha" value="<%= formData?.fecha || '' %>">
+    <div class="invalid-feedback">&nbsp;</div>
+  </div>
+  <div class="col-12">
+    <label for="fotos" class="form-label">Fotos</label>
+    <input class="form-control" type="file" id="fotos" name="fotos" accept="image/png, image/gif, image/jpeg" multiple value="<%= formData?.fotos || '' %>">
+    <div class="invalid-feedback">&nbsp;</div>
+  </div>
+  <div class="col-12">
+    <p>Datos de ubicación</p>
+    <div class="row g-3">
+      <!-- Esto es para validar que se localicen y de paso usar la api de geocoding -->
+      <input type="hidden" name="latitud" id="latitud">
+      <input type="hidden" name="longitud" id="longitud">
+      
+      <div class="col-12 col-sm-6 col-md-3">
+        <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Dirección" value="<%= formData?.direccion || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <select class="form-select" aria-label="Provincia" id="provincia" name="provincia" value="<%= formData?.provincia || '' %>">
+          <option value="-1" selected >Seleccione...</option>
+          <% provincias.forEach(element => { %>
+            <option value="<%=element.IdProvincia %>"><%=element.Descripcion %></option>
+          <% });  %>
+        </select>
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-3">
+        <select class="form-select" aria-label="Localidad" name="localidad" id="localidad" value="<%= formData?.localidad || '' %>">
+          <option value="-1" selected>Seleccione...</option>
+        </select>
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col" id="containerRadio">
+        <input type="number" class="form-control" id="radio" name="radio" placeholder="Radio en mts." value="<%= formData?.radio || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col">
+        <button class="btn btn-primary w-100" type="button" id="localizarDireccionEnMapa">Localizar</button>
+      </div>
+      <div class="col-12">
+        <div id="mapa-ubicacion">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <p>Datos de contacto</p>
+    <div class="row g-3">
+      <div class="col-12 col-sm-4">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Correo electrónico" value="<%= formData?.email || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12 col-sm-4">
+        <input type="number" step="1" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" value="<%= formData?.telefono || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12 col-sm-4">
+        <input type="number" step="1" class="form-control" id="celular" name="celular" placeholder="Celular" value="<%= formData?.celular || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="row g-3">
+      <div class="col-12">
+        <label for="palabrasClaves" class="form-label">Palabras Claves</label>
+        <input type="text" class="form-control" id="palabrasClaves" name="palabrasClaves" placeholder="Separadas por una coma. Ej: Celular,Motorola,Liniers" value="<%= formData?.palabrasClaves || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 d-none" id="seccionPreguntasSeguridad">
+    <p class="fw-bold">Preguntas de seguridad</p>
+    <p class="text-justify">Solo mostraremos tus datos de contacto a los verdaderos dueños del
+      objeto,
+      por eso te pedimos elaborar 3 preguntas de seguridad para poder identificarlo.</p>
+    <div class="row g-3">
+      <div class="col-12">
+        <label for="pregunta1" class="form-label">Pregunta 1</label>
+        <input type="text" class="form-control" id="pregunta1" name="pregunta1" value="<%= formData?.pregunta1 || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12">
+        <p>Respuestas</p>
+        <div class="row gx-3">
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta1Pregunta1" name="respuesta1Pregunta1" placeholder="Respuesta 1" value="<%= formData?.respuesta1Pregunta1 || '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta1" id="respuestaCorrecta1Pregunta1" value="1" checked>
+              <label class="form-check-label" for="respuestaCorrecta1Pregunta1">Correcta</label>
+            </div>
+          </div>  
+          <div class="col-8">  
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta2Pregunta1" name="respuesta2Pregunta1" placeholder="Respuesta 2" value="<%= formData?.respuesta2Pregunta1 || '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta1" id="respuestaCorrecta2Pregunta1" value="2">
+              <label class="form-check-label" for="respuestaCorrecta2Pregunta1">Correcta</label>
+            </div>
+          </div>
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta3Pregunta1" name="respuesta3Pregunta1" placeholder="Respuesta 3" value="<%= formData?.respuesta3Pregunta1 || '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class=" form-control-color form-control-sm  form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta1" id="respuestaCorrecta3Pregunta1" value="3">
+              <label class="form-check-label" for="respuestaCorrecta3Pregunta1">Correcta</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <label for="pregunta1" class="form-label">Pregunta 2</label>
+        <input type="text" class="form-control" id="pregunta2" name="pregunta2" value="<%= formData?.pregunta2 || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12">
+        <p>Respuestas</p>
+        <div class="row gx-3">
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta1Pregunta2" name="respuesta1Pregunta2" placeholder="Respuesta 1" value="<%= formData?.respuesta1Pregunta2|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta2" id="respuestaCorrecta1Pregunta2" value="1" checked>
+              <label class="form-check-label" for="respuestaCorrecta1Pregunta2">Correcta</label>
+            </div>
+          </div>
+          <div class="col-8">  
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta2Pregunta2" name="respuesta2Pregunta2" placeholder="Respuesta 2" value="<%= formData?.respuesta2Pregunta2|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta2" id="respuestaCorrecta3Pregunta2" value="2">
+              <label class="form-check-label" for="respuestaCorrecta2Pregunta2">Correcta</label>
+            </div>
+          </div>
+          <div class="col-8">    
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta3Pregunta2" name="respuesta3Pregunta2" placeholder="Respuesta 3" value="<%= formData?.respuesta3Pregunta2|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class=" form-control-color form-control-sm  form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta2" id="respuestaCorrecta3Pregunta2" value="3">
+              <label class="form-check-label" for="respuestaCorrecta3Pregunta2">Correcta</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <label for="pregunta1" class="form-label">Pregunta 3</label>
+        <input type="text" class="form-control" id="pregunta3" name="pregunta3" value="<%= formData?.pregunta3 || '' %>">
+        <div class="invalid-feedback">&nbsp;</div>
+      </div>
+      <div class="col-12">
+        <p>Respuestas</p>
+        <div class="row gx-3">
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta1Pregunta3" name="respuesta1Pregunta3" placeholder="Respuesta 1" value="<%= formData?.respuesta1Pregunta3|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta3" id="respuestaCorrecta1Pregunta3" value="1" checked>
+              <label class="form-check-label" for="respuestaCorrecta1Pregunta3">Correcta</label>
+            </div>
+          </div>
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta2Pregunta3" name="respuesta2Pregunta3" placeholder="Respuesta 2" value="<%= formData?.respuesta2Pregunta3|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class="form-control-color form-control-sm form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta3" id="respuestaCorrecta2Pregunta3" value="2">
+              <label class="form-check-label" for="respuestaCorrecta2Pregunta3">Correcta</label>
+            </div>
+          </div>
+          <div class="col-8">
+            <input type="text" class="form-control form-control-sm mb-1" id="respuesta3Pregunta3" name="respuesta3Pregunta3" placeholder="Respuesta 3" value="<%= formData?.respuesta3Pregunta3|| '' %>">
+            <div class="invalid-feedback">&nbsp;</div>
+          </div>
+          <div class="col-4">
+            <div class=" form-control-color form-control-sm  form-check mb-1">
+              <input class="form-check-input" type="radio" name="respuestaCorrectaPregunta3" id="respuestaCorrecta3Pregunta3" value="3">
+              <label class="form-check-label" for="respuestaCorrecta3Pregunta3">Correcta</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 mt-5 text-center text-sm-end">
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="button" class="btn btn-outline-danger">Cancelar</button>
+  </div>
+</div>
+
+<!-- Modal error localizacion -->
+<div class="modal fade" id="modalErroresLocalizacion" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Localización</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      </div>
+    </div>
+  </div>
+</div>

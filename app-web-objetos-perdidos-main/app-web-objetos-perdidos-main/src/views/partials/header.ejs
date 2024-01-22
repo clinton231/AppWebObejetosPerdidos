@@ -1,0 +1,27 @@
+<header>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">
+        <h5>Recuperando mis objetos</h5>
+      </a>
+      <div class="d-flex align-items-center">
+        <% if(logued){ %>
+          <span class="text-light fw-bold"><%= userLogged.NombreApellido %></span>
+        <a href="/nueva" class="btn btn-toolbar btn-lg" data-bs-toggle="tooltip" title="Agregar publicación">
+          <i class="bi bi-bookmark-plus text-light"></i>
+        </a>
+        <a href="/mis-publicaciones" class="btn btn-toolbar btn-lg" data-bs-toggle="tooltip" title="Mis publicaciones">
+          <i class="bi bi-person text-light"></i>
+        </a>
+        <a href="/logout" class="btn btn-toolbar btn-lg" data-bs-toggle="tooltip" title="Cerrar sesión">
+          <i class="bi bi-box-arrow-right text-light"></i>
+        </a>
+        <% }else { %>
+        <div class="d-flex">
+          <a href="/auth/google" class="btn btn-danger"><i class="bi bi-google"></i> Iniciar sesión con Google</a>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+</header>

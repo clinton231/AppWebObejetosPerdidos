@@ -1,0 +1,10 @@
+<% for (let level of ['success', 'warning', 'danger', 'info']) { %>
+    <% if (messages[level]) { %>
+      <% for (let m of messages[level]) { %>
+      <div class="alert alert-<%- level %> alert-dismissible fade show" id="alert" role="alert">
+        <%= m %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
+    <% } %>
+<% } %>
